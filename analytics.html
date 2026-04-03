@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .back { margin-bottom: 20px; }
+        .back a { text-decoration: none; color: #007bff; }
+        .analytics { margin-top: 20px; }
+        .chart { width: 400px; height: 200px; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; margin: 20px 0; }
+        .metric { padding: 10px; border: 1px solid #ddd; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="back"><a href="/">← Back to Dashboard</a></div>
+    <h1>Analytics</h1>
+    <p>View insights and analytics about your data. Charts, metrics, and reports.</p>
+    <div class="analytics">
+        <div class="metric">
+            <h3>Total Files</h3>
+            <p id="totalFiles">Loading...</p>
+        </div>
+        <div class="chart">
+            Sample Chart Area - Files Over Time
+        </div>
+        <div class="metric">
+            <h3>Recent Activity</h3>
+            <p>Last file added: <span id="lastActivity">N/A</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Fetch data from API
+        async function loadAnalytics() {
+            try {
+                const response = await fetch('/api/files');
+                const files = await response.json();
+                document.getElementById('totalFiles').textContent = files.length;
+                if (files.length > 0) {
+                    const lastFile = files[files.length - 1];
+                    document.getElementById('lastActivity').textContent = `${lastFile.name} on ${lastFile.date}`;
+                }
+            } catch (error) {
+                console.error('Error loading analytics:', error);
+            }
+        }
+
+        loadAnalytics();
+    </script>
+</body>
+</html>

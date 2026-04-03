@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .back { margin-bottom: 20px; }
+        .back a { text-decoration: none; color: #007bff; }
+        .budget-list { margin-top: 20px; }
+        .budget-item { padding: 10px; border: 1px solid #ddd; margin-bottom: 10px; }
+        .add-budget { margin-top: 20px; }
+        input { padding: 8px; margin: 5px; }
+        button { padding: 8px 12px; background: #28a745; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="back"><a href="/">← Back to Dashboard</a></div>
+    <h1><%= title %></h1>
+    <div class="budget-list" id="budgetList">
+        <!-- Budget items will be added here -->
+    </div>
+    <div class="add-budget">
+        <input type="text" id="itemInput" placeholder="Item name">
+        <input type="number" id="amountInput" placeholder="Amount">
+        <button id="addBudgetBtn">Add Budget Item</button>
+    </div>
+
+    <script>
+        let budget = JSON.parse(localStorage.getItem('budget')) || [];
+
+        function renderBudget() {
+            const budgetList = document.getElementById('budgetList');
+            budgetList.innerHTML = budget.map((item, index) => `
+                <div class="budget-item">
+                    <span>${item.name}: $${item.amount}</span>
+                    <button onclick="deleteBudget(${index})">Delete</button>
+                </div>
+            `).join('');
+        }
+
+        function addBudget() {
+            const nameInput = document.getElementById('itemInput');
+            const amountInput = document.getElementById('amountInput');
+            const name = nameInput.value.trim();
+            const amount = parseFloat(amountInput.value);
+            if (name && !isNaN(amount)) {
+                budget.push({ name, amount });
+                localStorage.setItem('budget', JSON.stringify(budget));
+                nameInput.value = '';
+                amountInput.value = '';
+                renderBudget();
+            }
+        }
+
+        function deleteBudget(index) {
+            budget.splice(index, 1);
+            localStorage.setItem('budget', JSON.stringify(budget));
+            renderBudget();
+        }
+
+        document.getElementById('addBudgetBtn').addEventListener('click', addBudget);
+        renderBudget();
+    </script>
+</body>
+</html>

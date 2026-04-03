@@ -1,0 +1,60 @@
+{
+  "title": "mansi",
+  "author": "Alex Chen",
+  "version": "1.2",
+  "sections": [
+    {
+      "id": "summary",
+      "title": "Executive Summary",
+      "content": "The Phoenix dashboard aims to centralize data from legacy systems."
+    },
+    {
+      "id": "goals",
+      "title": "Goals & Objectives",
+      "content": "<ul><li>Speed</li><li>Security</li><li>Scale</li></ul>"
+    },
+    {
+      "id": "specs",
+      "title": "Functional Specs",
+      "content": "The system shall support OAuth2 and real-time syncing."
+    }
+  ],
+  "files": [
+    {
+      "id": 1,
+      "name": "PRD Marketing Plan",
+      "owner": "You",
+      "date": "Apr 2, 2026"
+    },
+    {
+      "id": 2,
+      "name": "Sales Data Q1",
+      "owner": "You",
+      "date": "Apr 1, 2026"
+    },
+    {
+      "id": 3,
+      "name": "Client Reports",
+      "owner": "Team",
+      "date": "Mar 30, 2026"
+    },
+    {
+      "id": 4,
+      "name": "Product Roadmap",
+      "owner": "You",
+      "date": "Mar 28, 2026"
+    },
+    {
+      "id": 5,
+      "name": "Project Alpha Budget",
+      "owner": "Admin",
+      "date": "Mar 25, 2026"
+    },
+    {
+      "id": 6,
+      "name": "manu",
+      "owner": "manu",
+      "date": "Apr 3, 2026"
+    }
+  ]
+}
