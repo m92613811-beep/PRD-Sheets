@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .back { margin-bottom: 20px; }
+        .back a { text-decoration: none; color: #007bff; }
+        .reports { margin-top: 20px; }
+        .report-item { padding: 15px; border: 1px solid #ddd; margin-bottom: 15px; }
+        .generate-btn { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="back"><a href="/">← Back to Dashboard</a></div>
+    <h1>Reports</h1>
+    <p>Generate and view detailed reports on your files and activities.</p>
+    <div class="reports" id="reportsContainer">
+        <div class="report-item">
+            <h3>File Summary Report</h3>
+            <p>Overview of all files, owners, and dates.</p>
+            <button class="generate-btn" onclick="generateFileReport()">Generate Report</button>
+            <div id="fileReport" style="margin-top: 10px; display: none;"></div>
+        </div>
+        <div class="report-item">
+            <h3>Activity Report</h3>
+            <p>Recent activities and changes.</p>
+            <button class="generate-btn" onclick="generateActivityReport()">Generate Report</button>
+            <div id="activityReport" style="margin-top: 10px; display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        async function generateFileReport() {
+            try {
+                const response = await fetch('/api/files');
+                const files = await response.json();
+                const report = document.getElementById('fileReport');
+                report.innerHTML = `
+                    <h4>File Summary</h4>
+                    <p>Total Files: ${files.length}</p>
+                    <ul>
+                        ${files.map(f => `<li>${f.name} - ${f.owner} (${f.date})</li>`).join('')}
+                    </ul>
+                `;
+                report.style.display = 'block';
+            } catch (error) {
+                console.error('Error generating report:', error);
+            }
+        }
+
+        function generateActivityReport() {
+            const report = document.getElementById('activityReport');
+            report.innerHTML = `
+                <h4>Recent Activity</h4>
+                <p>Last login: Today</p>
+                <p>Files added this session: Check dashboard</p>
+            `;
+            report.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
