@@ -2,8 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+
 const app = express();
-const PORT = 3002;
 
 // Database file
 const DB_FILE = path.join(__dirname, 'db.json');
@@ -41,14 +41,14 @@ let files = db.files && db.files.length > 0 ? db.files : defaultFiles;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Enable CORS so your HTML file can talk to this server
+// Enable CORS
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from public directory
+// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Route to render the main page
+// Route to render main page
 app.get('/', (req, res) => {
     res.render('index', { files: files });
 });
@@ -81,15 +81,22 @@ app.post('/api/files', (req, res) => {
     if (!name || !owner) {
         return res.status(400).json({ error: 'Name and owner are required' });
     }
+
     const newFile = {
         id: files.length + 1,
         name,
         owner,
-        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+        date: new Date().toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        })
     };
+
     files.push(newFile);
     db.files = files;
     saveData(db);
+
     res.status(201).json(newFile);
 });
 
@@ -97,23 +104,30 @@ app.post('/api/files', (req, res) => {
 app.delete('/api/files/:id', (req, res) => {
     const id = parseInt(req.params.id);
     const index = files.findIndex(f => f.id === id);
+
     if (index === -1) {
         return res.status(404).json({ error: 'File not found' });
     }
+
     files.splice(index, 1);
     db.files = files;
     saveData(db);
+
     res.status(204).send();
 });
 
 // API Route to search files
 app.get('/api/files/search', (req, res) => {
     const query = req.query.q.toLowerCase();
-    const filtered = files.filter(f => f.name.toLowerCase().includes(query));
+    const filtered = files.filter(f =>
+        f.name.toLowerCase().includes(query)
+    );
     res.json(filtered);
 });
 
+// ✅ FIXED PORT (only declared once)
 const PORT = process.env.PORT || 3002;
+
 app.listen(PORT, () => {
-  console.log("Server running");
+    console.log("Server running on port " + PORT);
 });
