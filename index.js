@@ -39,13 +39,15 @@ let files = db.files && db.files.length > 0 ? db.files : defaultFiles;
 
 // Set view engine
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+
+// ✅ FIX: since your .ejs files are in root
+app.set('views', __dirname);
 
 // Enable CORS
 app.use(cors());
 app.use(express.json());
 
-// Serve static files
+// Serve static files (keep as-is, just ensure folder exists if used)
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Route to render main page
@@ -125,8 +127,8 @@ app.get('/api/files/search', (req, res) => {
     res.json(filtered);
 });
 
-// ✅ FIXED PORT (only declared once)
-const PORT = process.env.PORT || 3002;
+// ✅ FIXED PORT (Render compatible)
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
     console.log("Server running on port " + PORT);
